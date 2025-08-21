@@ -11,8 +11,17 @@ builder.Services.AddDbContext<ShopDBContext>(options =>
     options.UseSqlServer(builder.Configuration["ConnectionStrings:BethanysPieShopDbContextConnection"]);
 });
 var app = builder.Build();
-DbInitializer.Seed(app);
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+}
+
 //app.MapGet("/", () => "Hello World!");
 app.UseStaticFiles();
 app.MapDefaultControllerRoute();
+
+//app.MapControllerRoute(
+//    name: "default",
+//    pattern: "{controller=Home}/{action=Index}/{id?}");
+DbInitializer.Seed(app);
 app.Run();
