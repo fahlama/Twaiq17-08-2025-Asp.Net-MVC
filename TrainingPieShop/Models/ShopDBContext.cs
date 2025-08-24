@@ -11,5 +11,6 @@ namespace TrainingPieShop.Models
         }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Pie> pies { get; set; }
+        public DbSet<ShoppingCartItem> ShoppingCartItems { get; set;}
     }
 }

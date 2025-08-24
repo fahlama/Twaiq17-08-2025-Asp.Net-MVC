@@ -6,6 +6,9 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IPieRepository, PieRepository>();
+builder.Services.AddScoped<IShoppingCart, ShoppingCart>(sp=>ShoppingCart.GetShoppingCart(sp));
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddSession();
 builder.Services.AddDbContext<ShopDBContext>(options =>
 {
     options.UseSqlServer(builder.Configuration["ConnectionStrings:BethanysPieShopDbContextConnection"]);
@@ -19,7 +22,7 @@ if (app.Environment.IsDevelopment())
 //app.MapGet("/", () => "Hello World!");
 app.UseStaticFiles();
 app.MapDefaultControllerRoute();
-
+app.UseSession();
 //app.MapControllerRoute(
 //    name: "default",
 //    pattern: "{controller=Home}/{action=Index}/{id?}");
