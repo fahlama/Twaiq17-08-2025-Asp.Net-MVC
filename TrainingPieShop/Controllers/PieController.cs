@@ -14,10 +14,29 @@ namespace TrainingPieShop.Controllers
             _pieRepository = pieRepository;
             _categoryRepository = categoryRepository;
         }
-        public IActionResult List()
+        //public IActionResult List()
+        //{
+        //    // ViewBag.CurrentCategory = "Cheese cakes";
+        //    PieListViewModel pieListViewModel = new PieListViewModel(_pieRepository.AllPies, "Cheese cakes");
+        //    return View(pieListViewModel);
+        //}
+
+        public IActionResult List(string categoryName)
         {
+            IEnumerable<Pie> pies;
+            string? currentCategory;
+            if (string.IsNullOrEmpty(categoryName))
+            {
+                pies = _pieRepository.AllPies.OrderBy(p => p.PieId);
+                currentCategory = "All Pies";
+            }
+            else
+            {
+                pies = _pieRepository.AllPies.Where(p=>p.Category.CategoryName==categoryName).OrderBy(p => p.PieId);    
+                currentCategory = categoryName;
+            }
             // ViewBag.CurrentCategory = "Cheese cakes";
-            PieListViewModel pieListViewModel = new PieListViewModel(_pieRepository.AllPies, "Cheese cakes");
+            PieListViewModel pieListViewModel = new PieListViewModel(pies, currentCategory);
             return View(pieListViewModel);
         }
         public IActionResult Details(int id)
